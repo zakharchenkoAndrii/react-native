@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/**/*",
     "docs/**/*",
@@ -24,7 +25,8 @@
     "*.d.ts"
   ],
   "scripts": {
-    "prepare": "node ../../scripts/prepare.js"
+    "prepare": "node ../../scripts/prepare.js && yarn types",
+    "types": "npx typescript 'src/index.js' --declaration --allowJs --emitDeclarationOnly --outDir dist --esModuleInterop --skipLibCheck"
   },
   "dependencies": {
     "@emotion/native": "^10.0.14",
