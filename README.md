@@ -12,6 +12,8 @@ To try out the 6.0 alpha alongside react native web storybook you can use the ex
 expo init --template expo-template-storybook AwesomeStorybook
 ```
 
+The first 6.0 alpha is out now `6.0.1-alpha.0` to try it out follow [this guide](https://github.com/storybookjs/react-native/blob/next-6.0/v6README.md) (work in progress)
+
 For more information visit: [storybook.js.org](https://storybook.js.org)
 
 > NOTE: `@storybook/react-native` and `@storybook/react-native-server` are now on a different release cycle from the Storybook Core packages (`@storybook/react`, `@storybook/vue`, etc.). The last stable version of `@storybook/react-native` is `5.3.25` and it should be used with `5.3` versions of Storybook Core.
