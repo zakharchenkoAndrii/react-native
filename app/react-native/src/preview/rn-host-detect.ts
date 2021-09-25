@@ -1,14 +1,17 @@
 'use strict';
-
+declare global {
+  interface Window {
+    __fbBatchedBridgeConfig: any;
+    __DEV__: boolean;
+  }
+}
 /*
  * It only for Debug Remotely mode for Android
  * When __DEV__ === false, we can't use window.require('NativeModules')
  */
 function getByRemoteConfig(hostname) {
   var remoteModuleConfig =
-    typeof window !== 'undefined' &&
-    window.__fbBatchedBridgeConfig &&
-    window.__fbBatchedBridgeConfig.remoteModuleConfig;
+    typeof window !== 'undefined' && window.__fbBatchedBridgeConfig?.remoteModuleConfig;
   if (
     !Array.isArray(remoteModuleConfig) ||
     (hostname !== 'localhost' && hostname !== '127.0.0.1')
@@ -62,6 +65,7 @@ function getByRNRequirePolyfill(hostname) {
 export default function getHost(hostname) {
   // Check if it in React Native environment
   if (
+    // @ts-ignore
     typeof __fbBatchedBridge !== 'object' ||
     (hostname !== 'localhost' && hostname !== '127.0.0.1')
   ) {

@@ -8,6 +8,9 @@ import React from 'react';
 import { loadCsf } from './loadCsf';
 import OnDeviceUI from './components/OnDeviceUI';
 import { theme } from './components/Shared/theme';
+import createChannel from '@storybook/channel-websocket';
+import getHost from './rn-host-detect';
+import StoryView from './components/StoryView';
 
 const STORAGE_KEY = 'lastOpenedStory';
 
@@ -20,7 +23,7 @@ export type Params = {
   onDeviceUI: boolean;
   asyncStorage: AsyncStorage | null;
   resetStorybook: boolean;
-  disableWebsockets: boolean;
+  enableWebsockets: boolean;
   query: string;
   host: string;
   port: number;
@@ -49,6 +52,7 @@ export default class Preview {
   _asyncStorage: AsyncStorage | null;
 
   _configApi: ConfigApi;
+  _webUrl: string;
 
   configure: (loadable: Loadable, m: NodeModule, showDeprecationWarning: boolean) => void;
 
@@ -89,6 +93,26 @@ export default class Preview {
     }
 
     const { initialSelection, shouldPersistSelection } = params;
+    if (params.enableWebsockets) {
+      const host = getHost(params.host || 'localhost');
+      const port = `:${params.port || 7007}`;
+
+      const query = params.query || '';
+      const { secured } = params;
+      const websocketType = secured ? 'wss' : 'ws';
+      const httpType = secured ? 'https' : 'http';
+      console.log({ host, port });
+
+      const url = `${websocketType}://${host}${port}/${query}`;
+      this._webUrl = `${httpType}://${host}${port}`;
+      this._channel = createChannel({
+        url,
+        async: params.onDeviceUI,
+        onError: () => {
+          this._setInitialStory(initialSelection, shouldPersistSelection);
+        },
+      });
+    }
     this._setInitialStory(initialSelection, shouldPersistSelection);
 
     this._channel.on(Events.SET_CURRENT_STORY, (d: { storyId: string }) => {
@@ -100,17 +124,29 @@ export default class Preview {
     addons.loadAddons(this._clientApi);
 
     const appliedTheme = { ...theme, ...params.theme };
-    return () => (
-      <ThemeProvider theme={appliedTheme}>
-        <OnDeviceUI
-          storyStore={_storyStore}
-          isUIHidden={params.isUIHidden}
-          tabOpen={params.tabOpen}
-          shouldDisableKeyboardAvoidingView={params.shouldDisableKeyboardAvoidingView}
-          keyboardAvoidingViewVerticalOffset={params.keyboardAvoidingViewVerticalOffset}
-        />
-      </ThemeProvider>
-    );
+    if (params.onDeviceUI !== false) {
+      return () => (
+        <ThemeProvider theme={appliedTheme}>
+          <OnDeviceUI
+            storyStore={_storyStore}
+            isUIHidden={params.isUIHidden}
+            tabOpen={params.tabOpen}
+            shouldDisableKeyboardAvoidingView={params.shouldDisableKeyboardAvoidingView}
+            keyboardAvoidingViewVerticalOffset={params.keyboardAvoidingViewVerticalOffset}
+          />
+        </ThemeProvider>
+      );
+    } else {
+      return () => {
+        const storyId = _storyStore.getSelection()?.storyId;
+        const story = _storyStore.fromId(storyId);
+        return (
+          <ThemeProvider theme={appliedTheme}>
+            <StoryView story={story} url={this._webUrl} />
+          </ThemeProvider>
+        );
+      };
+    }
   };
 
   _setInitialStory = async (initialSelection: any, shouldPersistSelection = true) => {

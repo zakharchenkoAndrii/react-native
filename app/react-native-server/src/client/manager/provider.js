@@ -65,6 +65,6 @@ export default class ReactProvider extends Provider {
 
   handleAPI(api) {
     addons.loadAddons(api);
-    api.emit(Events.GET_STORIES);
+    // api.emit(Events.GET_STORIES); // this event doesn't exist anymore
   }
 }

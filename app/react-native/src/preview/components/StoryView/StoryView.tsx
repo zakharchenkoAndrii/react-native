@@ -6,6 +6,7 @@ import { StoryContext } from '@storybook/addons';
 
 interface Props {
   story?: StoreItem;
+  url?: string;
 }
 
 const styles = StyleSheet.create({
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const StoryView = ({ story }: Props) => {
+const StoryView = ({ story, url }: Props) => {
   const [context, setContext] = useState<StoryContext | undefined>(undefined);
   const id = story?.id;
 
@@ -40,12 +41,21 @@ const StoryView = ({ story }: Props) => {
       </View>
     );
   }
-
-  return (
-    <View style={styles.helpContainer}>
-      <Text>Please open navigator and select a story to preview.</Text>
-    </View>
-  );
+  if (url && url.length) {
+    return (
+      <View style={styles.helpContainer}>
+        <Text>
+          Please open the Storybook UI ({url}) with a web browser and select a story for preview.
+        </Text>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.helpContainer}>
+        <Text>Please open navigator and select a story to preview.</Text>
+      </View>
+    );
+  }
 };
 
 export default StoryView;

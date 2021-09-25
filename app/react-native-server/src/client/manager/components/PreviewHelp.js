@@ -32,6 +32,9 @@ const styles = {
 const PreviewHelp = () => (
   <div style={styles.main}>
     <h1>Welcome to storybook</h1>
+    <p>
+      <strong>Note components only render on the device, you won't see them here!</strong>
+    </p>
     <p>This is a UI component dev environment for your app.</p>
     <p>
       We've added some basic stories inside the {<span style={styles.code}>storybook/stories</span>}{' '}
@@ -44,9 +47,7 @@ const PreviewHelp = () => (
       (Note that due to an implementation detail, your stories will only show up in the left-pane
       after your device has connected to this storybook server.)
     </p>
-    <p>
-      For <span style={styles.code}>create-react-native-app</span> apps:
-    </p>
+    <p>For expo apps:</p>
     <div style={styles.codeBlock}>
       <pre style={styles.instructionsCode}>npm run &lt;platform&gt;</pre>
     </div>

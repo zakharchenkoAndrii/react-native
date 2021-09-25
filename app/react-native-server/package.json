@@ -18,8 +18,7 @@
   },
   "license": "MIT",
   "bin": {
-    "start-storybook": "./bin/index.js",
-    "storybook-server": "./bin/index.js"
+    "rn-storybook-server": "./bin/index.js"
   },
   "files": [
     "bin/**/*",

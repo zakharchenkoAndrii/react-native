@@ -13,6 +13,7 @@
     "prestart": "sbn-get-stories",
     "start": "react-native start",
     "storybook-watcher": "sbn-watcher",
+    "start-server": "rn-storybook-server",
     "test": "jest"
   },
   "jest": {
