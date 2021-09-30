@@ -59,7 +59,6 @@
     "publish:debug": "npm run publish:latest -- --npm-tag=debug --no-push",
     "publish:latest": "lerna publish --exact --concurrency 1 --force-publish",
     "publish:next": "npm run publish:latest -- --npm-tag=next",
-    "publish:alpha": "npm run publish:latest -- --npm-tag=alpha",
     "repo-dirty-check": "node ./scripts/repo-dirty-check",
     "test": "lerna run test"
   },
