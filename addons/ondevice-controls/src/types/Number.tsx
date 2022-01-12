@@ -26,6 +26,10 @@ export interface NumberProps {
   onChange: (value: number) => void;
 }
 
+const replaceComma = (value: number | string): string => {
+  return typeof value === 'string' ? value.trim().replace(/,/, '.') : value.toString();
+};
+
 const NumberType = ({ arg, onChange = (value) => value }: NumberProps) => {
   const showError = Number.isNaN(arg.value);
   const [numStr, setNumStr] = useState(arg.value.toString());
@@ -61,6 +65,12 @@ const NumberType = ({ arg, onChange = (value) => value }: NumberProps) => {
       />
     );
   };
+
+  useEffect(() => {
+    return () => {
+      onChange(numStrRef.current);
+    };
+  }, [onChange]);
 
   return <View style={styles.spacing}>{arg.range ? renderRange() : renderNormal()}</View>;
 };
