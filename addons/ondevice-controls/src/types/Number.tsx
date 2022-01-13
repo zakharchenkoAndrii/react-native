@@ -42,7 +42,7 @@ const NumberType = ({ arg, onChange = (value) => value }: NumberProps) => {
       <Input
         autoCapitalize="none"
         underlineColorAndroid="transparent"
-        value={arg.value.toString()}
+        value={numStr}
         keyboardType="numeric"
         onChangeText={handleNormalChangeText}
         style={showError && styles.errorBorder}
