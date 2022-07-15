@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
   sectionList: { flex: 1 },
 });
 
+const tabBarHeight = 40;
+
 const StoryListView = ({ selectedStory, storyStore }: Props) => {
   const insets = useSafeAreaInsets();
   const originalData = useMemo(() => getStories(storyStore), [storyStore]);
@@ -175,7 +177,7 @@ const StoryListView = ({ selectedStory, storyStore }: Props) => {
     channel.emit(Events.SET_CURRENT_STORY, { storyId });
   };
 
-  const safeStyle = { flex: 1, marginTop: insets.top, marginBottom: insets.bottom };
+  const safeStyle = { flex: 1, marginTop: insets.top, paddingBottom: insets.bottom + tabBarHeight };
 
   return (
     <StoryListContainer>
@@ -189,6 +191,7 @@ const StoryListView = ({ selectedStory, storyStore }: Props) => {
           returnKeyType="search"
         />
         <SectionList
+          // contentInset={{ bottom: insets.bottom, top: 0 }}
           style={styles.sectionList}
           testID="Storybook.ListView"
           renderItem={({ item }) => (
